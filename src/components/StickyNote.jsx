@@ -1,18 +1,28 @@
 import { useState } from "react";
 
-const StickyNote = () => {
+const StickyNote = ({ id, text, updateNote }) => {
   const [isediting, setisEditing] = useState(false);
+  const [newText, setNewText] = useState(text);
   const handleEdit = () => {
     setisEditing(true);
   };
   const handleSave = () => {
+    updateNote(id, newText);
     setisEditing(false);
   };
+
   return (
     <>
       {isediting ? (
         <div className=" bg-yellow-100 p-4 rounded-md">
-          <textarea className="bg-yellow-50"></textarea> <br />
+          <textarea
+            value={newText}
+            onChange={(e) => {
+              setNewText(e.target.value);
+            }}
+            className="bg-yellow-50"
+          ></textarea>{" "}
+          <br />
           <button
             onClick={handleSave}
             className="text-white text-s mbg-lime-700 hover:bg-lime-800 py-1 px-3 dark:bg-lime-600 dark:hover:bg-lime-700 rounded-lg mt-6"
@@ -22,7 +32,7 @@ const StickyNote = () => {
         </div>
       ) : (
         <div className="bg-yellow-100 p-2 rounded-md shadow-lg shadow-slate-100 m-6">
-          <p className="m-3">New Text</p>
+          <p className="m-3">{text}</p>
           <div className="flex justify-end gap-4">
             <button
               onClick={handleEdit}
