@@ -1,21 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StickyNote from "./components/StickyNote";
+import { supabase } from "./supabaseClient";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const addNotes = () => {
-    setNotes([
-      ...notes,
-      { id: Date.now(), text: "Click edit to write your note... " },
-    ]);
-  };
-  const updateNote = (id, newText) => {
-    setNotes((prev) =>
-      prev.map((note) => (note.id === id ? { ...note, text: newText } : note))
-    );
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const fetchNotes = async () => {
+    try {
+      let { data, error } = await supabase.from("Notes").select("*");
+      if (error) {
+        throw new error();
+      }
+      setNotes(data);
+    } catch (error) {
+      console.log("error fetching the data : ", error.message);
+    }
   };
 
-  const deleteNotes = (id) => {
+  const addNotes = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("Notes")
+        .insert([{ text: "clcik to edit your text   " }])
+        .select();
+
+      if (error) {
+        throw error;
+      }
+      setNotes([...notes, ...data]);
+    } catch (error) {
+      console.error("Error adding note:", error.message);
+    }
+  };
+  const updateNote = async (id, newText) => {
+    try {
+      const { data, error } = await supabase
+        .from("Notes")
+        .update({ text: newText })
+        .eq("id", id)
+        .select();
+      setNotes((prev) =>
+        prev.map((note) => (note.id === id ? { ...note, text: newText } : note))
+      );
+    } catch (error) {}
+  };
+
+  const deleteNotes = async (id) => {
+    const { error } = await supabase
+      .from("Notes")
+      .delete()
+      .eq("id", id)
     setNotes(notes.filter((note) => note.id !== id));
   };
 
