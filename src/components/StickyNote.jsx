@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const StickyNote = ({ id, text, updateNote }) => {
+const StickyNote = ({ id, text, updateNote, deleteNotes }) => {
   const [isediting, setisEditing] = useState(false);
   const [newText, setNewText] = useState(text);
   const handleEdit = () => {
@@ -53,7 +53,12 @@ const StickyNote = ({ id, text, updateNote }) => {
                 />
               </svg>
             </button>
-            <button className="text-white text-sm bg-red-700 hover:bg-red-700 p-1  rounded-lg dark:bg-red-900  ">
+            <button
+              onClick={() => {
+                deleteNotes(id);
+              }}
+              className="text-white text-sm bg-red-700 hover:bg-red-700 p-1  rounded-lg dark:bg-red-900  "
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

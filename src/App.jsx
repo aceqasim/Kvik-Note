@@ -15,6 +15,10 @@ const App = () => {
     );
   };
 
+  const deleteNotes = (id) => {
+    setNotes(notes.filter((note) => note.id !== id));
+  };
+
   return (
     <>
       <h1 className="m-3 text-white font-bold text-5xl italic"> Kvik Note</h1>
@@ -46,6 +50,7 @@ const App = () => {
             id={note.id}
             text={note.text}
             updateNote={updateNote}
+            deleteNotes={deleteNotes}
           />
         ))}
       </div>
