@@ -49,16 +49,13 @@ const App = () => {
   };
 
   const deleteNotes = async (id) => {
-    const { error } = await supabase
-      .from("Notes")
-      .delete()
-      .eq("id", id)
+    const { error } = await supabase.from("Notes").delete().eq("id", id);
     setNotes(notes.filter((note) => note.id !== id));
   };
 
   return (
     <>
-      <h1 className="m-3 text-white font-bold text-5xl italic"> Kvik Note</h1>
+      <h1 className="m-3 text-white font-bold text-5xl italic"> Kuick Note</h1>
       <div className="text-center">
         <button
           onClick={addNotes}
